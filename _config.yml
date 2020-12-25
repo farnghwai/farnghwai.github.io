@@ -1,5 +1,6 @@
 #Jekyll configuration
 name: Farng Hwai Public Website 2020
+title: Farng Hwai Home
 description: Farng Hwai Public Website 2020 initial try
 url: "https://farnghwai.github.io/"
 theme: jekyll-theme-minimal
