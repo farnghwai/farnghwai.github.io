@@ -2,7 +2,7 @@
 name: Farng Hwai Public Website 2020
 description: Farng Hwai Public Website 2020 initial try
 url: "https://farnghwai.github.io/"
-theme: jekyll-theme-cayman
+theme: jekyll-theme-minimal
 markdown: kramdown
 kramdown:
   input: GFM
