@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Learn Canvas</title>
+    <style>
+    body {
+        margin: 0;
+        
+    }
+    .canvas-holder {
+        margin: 5px;
+    }
+    </style>
+</head>
+<body>
+<h1>Learn Canvas</h1>
+<div>
+    <ul>
+        <li>Canvas:
+            <ul>
+                <li>width: <span id="canvas_width"></span> px</li>
+                <li>height: <span id="canvas_height"></span> px</li>
+                <li>margin: <span id="canvas_margin"></span> px</li>
+            </ul>
+        </li>
+        <li>Elements: <span id="element_total"></span>
+            <ul>
+                <li>radius: <span id="element_radius"></span> </li>
+                <li>tangent: <span id="element_tangent"></span> </li>
+            </ul>
+        </li>
+    </ul>
+</div>
+<div class="canvas-holder">
+    <div>
+        <input type="number" id="circleSpacing" value="10" min="1" style="text-align: right;" />
+        <input type="number" id="circle" value="5" min="1" style="text-align: right;" />
+        <input type="button" id="redraw" value="redraw" />
+    </div>
+    <div>
+        <canvas class="myCanvas" width="640" height="480" style="border: 1px solid #000;">
+            <p>Your browser doesn't support Canvas.</p>
+        </canvas>
+    </div>
+</div>
+<script type="module">
+    import { Circle } from "./modules/circle.js"
+
+    const elemHolders = [
+        { wordChs: "火", wordEng: "Fire", x: 200, y: 50, color: "rgb(255, 0, 0)" },
+        { wordChs: "土", wordEng: "Earth", x: 300, y: 150, color: "rgb(255, 192, 0)" },
+        { wordChs: "金", wordEng: "Metal", x: 270, y: 280, color: "rgb(174, 170, 170)" },
+        { wordChs: "水", wordEng: "Water", x: 130, y: 280, color: "rgb(0, 176, 240)" },
+        { wordChs: "木", wordEng: "Wood", x: 100, y: 150, color: "rgb(0, 176, 80)" },
+        { wordChs: "氣", wordEng: "Qi", x: 50, y: 50, color: "rgb(146, 176, 80)" },
+        { wordChs: "氣1", wordEng: "Qi1", x: 50, y: 50, color: "rgb(146, 176, 80)" },
+        { wordChs: "氣2", wordEng: "Qi2", x: 55, y: 55, color: "rgb(146, 176, 80)" },
+        { wordChs: "氣3", wordEng: "Qi3", x: 60, y: 60, color: "rgb(146, 176, 80)" },
+        { wordChs: "氣4", wordEng: "Qi4", x: 65, y: 65, color: "rgb(146, 176, 80)" },
+        { wordChs: "氣5", wordEng: "Qi5", x: 70, y: 70, color: "rgb(146, 176, 80)" },
+        { wordChs: "氣6", wordEng: "Qi6", x: 75, y: 75, color: "rgb(146, 176, 80)" },
+        { wordChs: "氣7", wordEng: "Qi7", x: 80, y: 80, color: "rgb(146, 176, 80)" },
+        { wordChs: "氣8", wordEng: "Qi8", x: 85, y: 85, color: "rgb(146, 176, 80)" },
+        { wordChs: "氣9", wordEng: "Qi9", x: 90, y: 90, color: "rgb(146, 176, 80)" },
+        { wordChs: "氣10", wordEng: "Qi10", x: 100, y: 100, color: "rgb(146, 176, 80)" },
+        { wordChs: "氣11", wordEng: "Qi11", x: 105, y: 105, color: "rgb(146, 176, 80)" },
+        { wordChs: "氣12", wordEng: "Qi12", x: 110, y: 110, color: "rgb(146, 176, 80)" },
+        { wordChs: "氣13", wordEng: "Qi13", x: 115, y: 115, color: "rgb(146, 176, 80)" },
+        { wordChs: "氣14", wordEng: "Qi14", x: 120, y: 120, color: "rgb(146, 176, 80)" },
+        { wordChs: "氣15", wordEng: "Qi15", x: 125, y: 125, color: "rgb(146, 176, 80)" },
+    ]
+
+
+//Math.atan(2.8/4)*180/Math.PI
+//atan (opposite / adjacent)
+//https://www.masterso.com/classroom/classroom2_1_5.php
+//https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Client-side_web_APIs/Drawing_graphics
+
+    const canvas = document.querySelector(".myCanvas")
+    const width = canvas.clientWidth //= window.innerWidth
+    const height =  canvas.clientHeight //= window.innerHeight
+
+    const ctx = canvas.getContext("2d")
+
+    let canvas_width = document.getElementById("canvas_width")
+    let canvas_height = document.getElementById("canvas_height")
+    let canvas_margin = document.getElementById("canvas_margin")
+
+    let element_total = document.getElementById("element_total")
+    let element_radius = document.getElementById("element_radius")
+    let element_tangent = document.getElementById("element_tangent")
+    
+    canvas_width.textContent = width
+    canvas_height.textContent = height
+    console.log("Canvas offset: (w, h)", canvas.offsetWidth, canvas.offsetHeight)
+//    canvas_margin.textContent = canvas.margin
+
+    let btn = document.getElementById("redraw")
+    let inputVal = document.getElementById("circle")
+    let inputValSpacing = document.getElementById("circleSpacing")
+    let c = new Circle(ctx, width, height)
+
+    btn.onclick = rp
+    inputVal.onchange = rp
+
+
+    function rp(evt) {
+        let noOfElements = parseInt(inputVal.value);
+                
+        if (noOfElements > elemHolders.length) {
+            noOfElements = elemHolders.length
+        }        
+        element_total.textContent = noOfElements
+
+        c.draw(elemHolders.slice(0,noOfElements))
+    }
+    rp()
+
+</script>
+</body>
+</html>
