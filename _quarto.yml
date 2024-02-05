@@ -1,0 +1,20 @@
+project:
+  type: website
+  output-dir: docs
+
+website:
+  title: "Farng Hwai's Home"
+  navbar:
+    right:
+      - about.qmd
+      - icon: github
+        href: https://github.com/farnghwai
+      # - icon: twitter
+      #   href: https://twitter.com
+format:
+  html:
+    theme: yeti
+    css: styles.css
+
+execute:
+  freeze: auto

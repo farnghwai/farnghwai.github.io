@@ -1,0 +1,8 @@
+---
+title: "Welcome To My Blog"
+author: "Farng Hwai Yew"
+date: "2024-01-30"
+categories: [news]
+---
+
+This is the first post in a blog. Welcome!
