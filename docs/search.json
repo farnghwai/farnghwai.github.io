@@ -7,6 +7,41 @@
     "text": "This is to document journey in Generative Artificial Intelligence technology."
   },
   {
+    "objectID": "posts/llm_inference_using_rtx_2080_ti-part_1/index.html",
+    "href": "posts/llm_inference_using_rtx_2080_ti-part_1/index.html",
+    "title": "LLM Inference using RTX 2080 Ti (Part 1)",
+    "section": "",
+    "text": "First try on Large Language Model (LLM) inference coding. Pick Llama2 7b Chat HF model which can downloaded from HuggingFace after request from Meta. Inference hardware is using Nvidia RTX 2080 Ti and code in python language. Primary Python packages are from HuggingFace packages which are transformer, accelerate, optimum and bitsandbytes. Due to limitation of RTX 2080 Ti Turing architecture and available of GPU memory size, the model need to quantize to lower bit so that it can fit into 2080 Ti memory size and exclude of usage FlashAttention2 packages since it only support Ampere and newer.\n\n\n\n\n\n\nCategory\nModel\n\n\n\n\nCPU\nIntel i7-8700K\n\n\nGPU\nNvidia RTX 2080 Ti 11GB\n\n\nRAM\n32 GB\n\n\nOS\nDebian 12 (Bookwoorm) via WSL 2 (Windows 11 Pro 22H2)\n\n\nLanguage\nPython 3.11.2\n\n\n\n\n\n\n\nSetup Python Virtual Environment using venv.\nRegister to obtain right to download Meta - Llama2 models.\nRegister account in HuggingFace and download Llama2 model that is compatible to HF from https://huggingface.co/meta-llama/Llama-2-7b-chat-hf\nInstall required python packages to perform inference using GPU\npip install bitsandbytes transformers accelerate optimum\nCode from HuggingFace and modified these 3 things:\n\nUse Llama2 models instead\nRemove BetterTransformer as LLama already included\nRemove FlashAttention2 code as Turing Achitecture not support\n\nimport torch\nfrom transformers import AutoModelForCausalLM, AutoTokenizer, BitsAndBytesConfig\n\n# load model in 4-bit\nquantization_config = BitsAndBytesConfig(\n    load_in_4bit=True,\n    bnb_4bit_compute_dtype=torch.float16,\n)\n\n# pre-downloaded model\nmodel_name = \"./Llama-2-7b-chat-hf\"\ntokenizer = AutoTokenizer.from_pretrained(model_name)\nmodel = AutoModelForCausalLM.from_pretrained(model_name, \n                                                quantization_config=quantization_config)\n\ninput_text = \"Hello my dog is cute and\"\ninputs = tokenizer(input_text, return_tensors=\"pt\").to(\"cuda\")\n\noutputs = model.generate(**inputs)\n\nprint(tokenizer.decode(outputs[0], skip_special_tokens=True))\nOutput\n\n\n\n\n\n\nhttps://huggingface.co/docs/transformers/en/perf_infer_gpu_one\nhttps://huggingface.co/docs/optimum/bettertransformer/overview"
+  },
+  {
+    "objectID": "posts/llm_inference_using_rtx_2080_ti-part_1/index.html#overview",
+    "href": "posts/llm_inference_using_rtx_2080_ti-part_1/index.html#overview",
+    "title": "LLM Inference using RTX 2080 Ti (Part 1)",
+    "section": "",
+    "text": "First try on Large Language Model (LLM) inference coding. Pick Llama2 7b Chat HF model which can downloaded from HuggingFace after request from Meta. Inference hardware is using Nvidia RTX 2080 Ti and code in python language. Primary Python packages are from HuggingFace packages which are transformer, accelerate, optimum and bitsandbytes. Due to limitation of RTX 2080 Ti Turing architecture and available of GPU memory size, the model need to quantize to lower bit so that it can fit into 2080 Ti memory size and exclude of usage FlashAttention2 packages since it only support Ampere and newer."
+  },
+  {
+    "objectID": "posts/llm_inference_using_rtx_2080_ti-part_1/index.html#environment",
+    "href": "posts/llm_inference_using_rtx_2080_ti-part_1/index.html#environment",
+    "title": "LLM Inference using RTX 2080 Ti (Part 1)",
+    "section": "",
+    "text": "Category\nModel\n\n\n\n\nCPU\nIntel i7-8700K\n\n\nGPU\nNvidia RTX 2080 Ti 11GB\n\n\nRAM\n32 GB\n\n\nOS\nDebian 12 (Bookwoorm) via WSL 2 (Windows 11 Pro 22H2)\n\n\nLanguage\nPython 3.11.2"
+  },
+  {
+    "objectID": "posts/llm_inference_using_rtx_2080_ti-part_1/index.html#steps",
+    "href": "posts/llm_inference_using_rtx_2080_ti-part_1/index.html#steps",
+    "title": "LLM Inference using RTX 2080 Ti (Part 1)",
+    "section": "",
+    "text": "Setup Python Virtual Environment using venv.\nRegister to obtain right to download Meta - Llama2 models.\nRegister account in HuggingFace and download Llama2 model that is compatible to HF from https://huggingface.co/meta-llama/Llama-2-7b-chat-hf\nInstall required python packages to perform inference using GPU\npip install bitsandbytes transformers accelerate optimum\nCode from HuggingFace and modified these 3 things:\n\nUse Llama2 models instead\nRemove BetterTransformer as LLama already included\nRemove FlashAttention2 code as Turing Achitecture not support\n\nimport torch\nfrom transformers import AutoModelForCausalLM, AutoTokenizer, BitsAndBytesConfig\n\n# load model in 4-bit\nquantization_config = BitsAndBytesConfig(\n    load_in_4bit=True,\n    bnb_4bit_compute_dtype=torch.float16,\n)\n\n# pre-downloaded model\nmodel_name = \"./Llama-2-7b-chat-hf\"\ntokenizer = AutoTokenizer.from_pretrained(model_name)\nmodel = AutoModelForCausalLM.from_pretrained(model_name, \n                                                quantization_config=quantization_config)\n\ninput_text = \"Hello my dog is cute and\"\ninputs = tokenizer(input_text, return_tensors=\"pt\").to(\"cuda\")\n\noutputs = model.generate(**inputs)\n\nprint(tokenizer.decode(outputs[0], skip_special_tokens=True))\nOutput"
+  },
+  {
+    "objectID": "posts/llm_inference_using_rtx_2080_ti-part_1/index.html#references",
+    "href": "posts/llm_inference_using_rtx_2080_ti-part_1/index.html#references",
+    "title": "LLM Inference using RTX 2080 Ti (Part 1)",
+    "section": "",
+    "text": "https://huggingface.co/docs/transformers/en/perf_infer_gpu_one\nhttps://huggingface.co/docs/optimum/bettertransformer/overview"
+  },
+  {
     "objectID": "posts/welcome/index.html",
     "href": "posts/welcome/index.html",
     "title": "Welcome To My Blog",
@@ -18,6 +53,6 @@
     "href": "index.html",
     "title": "FarngHwai.github.io",
     "section": "",
-    "text": "Welcome To My Blog\n\n\n\n\n\n\nnews\n\n\n\n\n\n\n\n\n\nJan 30, 2024\n\n\nFarng Hwai Yew\n\n\n\n\n\n\nNo matching items"
+    "text": "LLM Inference using RTX 2080 Ti (Part 1)\n\n\n\n\n\n\nllm\n\n\nhf\n\n\n\n\n\n\n\n\n\nFeb 6, 2024\n\n\nFarng Hwai Yew\n\n\n\n\n\n\n\n\n\n\n\n\nWelcome To My Blog\n\n\n\n\n\n\nnews\n\n\n\n\n\n\n\n\n\nJan 30, 2024\n\n\nFarng Hwai Yew\n\n\n\n\n\n\nNo matching items"
   }
 ]

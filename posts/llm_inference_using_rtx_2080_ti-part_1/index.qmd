@@ -1,0 +1,78 @@
+---
+title: "LLM Inference using RTX 2080 Ti (Part 1)"
+author: "Farng Hwai Yew"
+date: "2024-02-06"
+toc: true
+categories: [llm, hf]
+---
+
+# LLM Inference using RTX 2080 Ti (Part 1)
+
+## Overview
+
+First try on Large Language Model (LLM) inference coding. Pick **Llama2 7b Chat HF** model which can downloaded from HuggingFace after request from **Meta**. Inference hardware is using Nvidia RTX 2080 Ti and code in python language. Primary Python packages are from HuggingFace packages which are transformer, accelerate, optimum and bitsandbytes. Due to limitation of RTX 2080 Ti Turing architecture and available of GPU memory size, the model need to quantize to lower bit so that it can fit into 2080 Ti memory size and exclude of usage FlashAttention2 packages since it only support Ampere and newer.
+
+## Environment
+
+| Category | Model                                                 |
+|----------|-------------------------------------------------------|
+| CPU      | Intel i7-8700K                                        |
+| GPU      | Nvidia RTX 2080 Ti 11GB                               |
+| RAM      | 32 GB                                                 |
+| OS       | Debian 12 (Bookwoorm) via WSL 2 (Windows 11 Pro 22H2) |
+| Language | Python 3.11.2                                         |
+
+## Steps
+
+1.  Setup Python Virtual Environment using *venv.*
+
+2.  Register to obtain right to download [Meta - Llama2](https://llama.meta.com/) models.
+
+3.  Register account in [HuggingFace](https://huggingface.co/) and download Llama2 model that is compatible to HF from <https://huggingface.co/meta-llama/Llama-2-7b-chat-hf>
+
+4.  Install required python packages to perform inference using GPU
+
+    ``` python
+    pip install bitsandbytes transformers accelerate optimum
+    ```
+
+5.  Code from [HuggingFace](https://huggingface.co/docs/transformers/perf_infer_gpu_on) and modified these 3 things:
+
+    1.  Use Llama2 models instead
+
+    2.  Remove BetterTransformer as LLama already included
+
+    3.  Remove FlashAttention2 code as Turing Achitecture not support
+
+    ``` python
+    import torch
+    from transformers import AutoModelForCausalLM, AutoTokenizer, BitsAndBytesConfig
+
+    # load model in 4-bit
+    quantization_config = BitsAndBytesConfig(
+        load_in_4bit=True,
+        bnb_4bit_compute_dtype=torch.float16,
+    )
+
+    # pre-downloaded model
+    model_name = "./Llama-2-7b-chat-hf"
+    tokenizer = AutoTokenizer.from_pretrained(model_name)
+    model = AutoModelForCausalLM.from_pretrained(model_name, 
+                                                    quantization_config=quantization_config)
+
+    input_text = "Hello my dog is cute and"
+    inputs = tokenizer(input_text, return_tensors="pt").to("cuda")
+
+    outputs = model.generate(**inputs)
+
+    print(tokenizer.decode(outputs[0], skip_special_tokens=True))
+    ```
+
+6.  Output
+
+    ![](images/output.png)
+
+## References
+
+1.  <https://huggingface.co/docs/transformers/en/perf_infer_gpu_one>
+2.  <https://huggingface.co/docs/optimum/bettertransformer/overview>
