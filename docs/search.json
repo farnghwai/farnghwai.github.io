@@ -7,6 +7,41 @@
     "text": "This is to document journey in Generative Artificial Intelligence technology."
   },
   {
+    "objectID": "posts/llm_inference_using_rtx_2080_ti-part_2/index.html",
+    "href": "posts/llm_inference_using_rtx_2080_ti-part_2/index.html",
+    "title": "LLM Inference using RTX 2080 Ti (Part 2)",
+    "section": "",
+    "text": "Include LangChain framework so that the LLM application is context aware and perform reasoning based on language model selected.\n\n\n\n\nContinue using Python Virtual Environment Meta - Llama2 model from Part 1.\nInstall langchain python package\npip install langchain\nUse the code from Part 1 and add langchain packages:\n\nImport additional component - “pipeline” in transformers\nReference langchain package\nConvert to “prompt”\n\nimport torch\nfrom transformers import AutoModelForCausalLM, AutoTokenizer, BitsAndBytesConfig, pipeline\nfrom langchain_community.llms.huggingface_pipeline import HuggingFacePipeline\nfrom langchain.prompts import PromptTemplate\n\n# load model in 4-bit\nquantization_config = BitsAndBytesConfig(\n    load_in_4bit=True,\n    bnb_4bit_compute_dtype=torch.float16,\n)\n\n# pre-downloaded model\nmodel_name = \"./Llama-2-7b-chat-hf\"\ntokenizer = AutoTokenizer.from_pretrained(model_name)\nmodel = AutoModelForCausalLM.from_pretrained(model_name,\n                                             quantization_config=quantization_config)\npipe = pipeline(\"text-generation\", model=model, tokenizer=tokenizer, max_new_tokens=10)\n\nhf = HuggingFacePipeline(pipeline=pipe)\n\ntemplate = \"\"\"Question: {question}\n\nAnswer: Let's think step by step.\"\"\"\nprompt = PromptTemplate.from_template(template)\n\nchain = prompt | hf\n\nquestion = \"What is electroencephalography?\"\nprint(chain.invoke({\"question\": question}))\nOutput\n\nPlayaround “max_new_tokens” value in pipeline to see the changes of output. eg. max_new_tokens=2000\n\n\n\n\n\n\nhttps://python.langchain.com/docs/integrations/llms/huggingface_pipelines"
+  },
+  {
+    "objectID": "posts/llm_inference_using_rtx_2080_ti-part_2/index.html#overview",
+    "href": "posts/llm_inference_using_rtx_2080_ti-part_2/index.html#overview",
+    "title": "LLM Inference using RTX 2080 Ti (Part 2)",
+    "section": "",
+    "text": "Include LangChain framework so that the LLM application is context aware and perform reasoning based on language model selected."
+  },
+  {
+    "objectID": "posts/llm_inference_using_rtx_2080_ti-part_2/index.html#steps",
+    "href": "posts/llm_inference_using_rtx_2080_ti-part_2/index.html#steps",
+    "title": "LLM Inference using RTX 2080 Ti (Part 2)",
+    "section": "",
+    "text": "Continue using Python Virtual Environment Meta - Llama2 model from Part 1.\nInstall langchain python package\npip install langchain\nUse the code from Part 1 and add langchain packages:\n\nImport additional component - “pipeline” in transformers\nReference langchain package\nConvert to “prompt”\n\nimport torch\nfrom transformers import AutoModelForCausalLM, AutoTokenizer, BitsAndBytesConfig, pipeline\nfrom langchain_community.llms.huggingface_pipeline import HuggingFacePipeline\nfrom langchain.prompts import PromptTemplate\n\n# load model in 4-bit\nquantization_config = BitsAndBytesConfig(\n    load_in_4bit=True,\n    bnb_4bit_compute_dtype=torch.float16,\n)\n\n# pre-downloaded model\nmodel_name = \"./Llama-2-7b-chat-hf\"\ntokenizer = AutoTokenizer.from_pretrained(model_name)\nmodel = AutoModelForCausalLM.from_pretrained(model_name,\n                                             quantization_config=quantization_config)\npipe = pipeline(\"text-generation\", model=model, tokenizer=tokenizer, max_new_tokens=10)\n\nhf = HuggingFacePipeline(pipeline=pipe)\n\ntemplate = \"\"\"Question: {question}\n\nAnswer: Let's think step by step.\"\"\"\nprompt = PromptTemplate.from_template(template)\n\nchain = prompt | hf\n\nquestion = \"What is electroencephalography?\"\nprint(chain.invoke({\"question\": question}))\nOutput\n\nPlayaround “max_new_tokens” value in pipeline to see the changes of output. eg. max_new_tokens=2000"
+  },
+  {
+    "objectID": "posts/llm_inference_using_rtx_2080_ti-part_2/index.html#references",
+    "href": "posts/llm_inference_using_rtx_2080_ti-part_2/index.html#references",
+    "title": "LLM Inference using RTX 2080 Ti (Part 2)",
+    "section": "",
+    "text": "https://python.langchain.com/docs/integrations/llms/huggingface_pipelines"
+  },
+  {
+    "objectID": "posts/welcome/index.html",
+    "href": "posts/welcome/index.html",
+    "title": "Welcome To My Blog",
+    "section": "",
+    "text": "This is the first post in a blog. Welcome!"
+  },
+  {
     "objectID": "posts/llm_inference_using_rtx_2080_ti-part_1/index.html",
     "href": "posts/llm_inference_using_rtx_2080_ti-part_1/index.html",
     "title": "LLM Inference using RTX 2080 Ti (Part 1)",
@@ -42,17 +77,10 @@
     "text": "https://huggingface.co/docs/transformers/en/perf_infer_gpu_one\nhttps://huggingface.co/docs/optimum/bettertransformer/overview"
   },
   {
-    "objectID": "posts/welcome/index.html",
-    "href": "posts/welcome/index.html",
-    "title": "Welcome To My Blog",
-    "section": "",
-    "text": "This is the first post in a blog. Welcome!"
-  },
-  {
     "objectID": "index.html",
     "href": "index.html",
     "title": "FarngHwai.github.io",
     "section": "",
-    "text": "LLM Inference using RTX 2080 Ti (Part 1)\n\n\n\n\n\n\nllm\n\n\nhf\n\n\n\n\n\n\n\n\n\nFeb 6, 2024\n\n\nFarng Hwai Yew\n\n\n\n\n\n\n\n\n\n\n\n\nWelcome To My Blog\n\n\n\n\n\n\nnews\n\n\n\n\n\n\n\n\n\nJan 30, 2024\n\n\nFarng Hwai Yew\n\n\n\n\n\n\nNo matching items"
+    "text": "LLM Inference using RTX 2080 Ti (Part 2)\n\n\n\n\n\n\nllm\n\n\nhf\n\n\nlangchain\n\n\n\n\n\n\n\n\n\nFeb 9, 2024\n\n\nFarng Hwai Yew\n\n\n\n\n\n\n\n\n\n\n\n\nLLM Inference using RTX 2080 Ti (Part 1)\n\n\n\n\n\n\nllm\n\n\nhf\n\n\n\n\n\n\n\n\n\nFeb 6, 2024\n\n\nFarng Hwai Yew\n\n\n\n\n\n\n\n\n\n\n\n\nWelcome To My Blog\n\n\n\n\n\n\nnews\n\n\n\n\n\n\n\n\n\nJan 30, 2024\n\n\nFarng Hwai Yew\n\n\n\n\n\n\nNo matching items"
   }
 ]

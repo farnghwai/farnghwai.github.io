@@ -2,6 +2,7 @@
   {
     "listing": "/index.html",
     "items": [
+      "/posts/llm_inference_using_rtx_2080_ti-part_2/index.html",
       "/posts/llm_inference_using_rtx_2080_ti-part_1/index.html",
       "/posts/welcome/index.html"
     ]

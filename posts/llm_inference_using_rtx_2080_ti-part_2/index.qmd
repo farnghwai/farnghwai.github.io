@@ -1,0 +1,75 @@
+---
+title: "LLM Inference using RTX 2080 Ti (Part 2)"
+author: "Farng Hwai Yew"
+date: "2024-02-09"
+toc: true
+categories: [llm, hf, langchain]
+---
+
+# LLM Inference using RTX 2080 Ti (Part 2)
+
+## Overview
+
+Include LangChain framework so that the LLM application is context aware and perform reasoning based on language model selected.
+
+## Steps
+
+1.  Continue using Python Virtual Environment Meta - Llama2 model from Part 1*.*
+
+2.  Install **langchain** python package
+
+    ``` python
+    pip install langchain
+    ```
+
+3.  Use the code from Part 1 and add langchain packages:
+
+    1.  Import additional component - "pipeline" in transformers
+
+    2.  Reference langchain package
+
+    3.  Convert to "prompt"
+
+    ``` python
+    import torch
+    from transformers import AutoModelForCausalLM, AutoTokenizer, BitsAndBytesConfig, pipeline
+    from langchain_community.llms.huggingface_pipeline import HuggingFacePipeline
+    from langchain.prompts import PromptTemplate
+
+    # load model in 4-bit
+    quantization_config = BitsAndBytesConfig(
+        load_in_4bit=True,
+        bnb_4bit_compute_dtype=torch.float16,
+    )
+
+    # pre-downloaded model
+    model_name = "./Llama-2-7b-chat-hf"
+    tokenizer = AutoTokenizer.from_pretrained(model_name)
+    model = AutoModelForCausalLM.from_pretrained(model_name,
+                                                 quantization_config=quantization_config)
+    pipe = pipeline("text-generation", model=model, tokenizer=tokenizer, max_new_tokens=10)
+
+    hf = HuggingFacePipeline(pipeline=pipe)
+
+    template = """Question: {question}
+
+    Answer: Let's think step by step."""
+    prompt = PromptTemplate.from_template(template)
+
+    chain = prompt | hf
+
+    question = "What is electroencephalography?"
+    print(chain.invoke({"question": question}))
+    ```
+
+4.  Output
+
+    ![](images/output-1.png)
+
+5.  Playaround "**max_new_tokens**" value in *pipeline* to see the changes of output. eg. max_new_tokens=2000
+
+    ![](images/output-2.png)
+
+## References
+
+1.  <https://python.langchain.com/docs/integrations/llms/huggingface_pipelines>
