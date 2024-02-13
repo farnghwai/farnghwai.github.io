@@ -6,8 +6,10 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="Farng Hwai Yew">
+<meta name="dcterms.date" content="2024-02-13">
 
-<title>Farng Hwai’s Home - FarngHwai.github.io</title>
+<title>Farng Hwai’s Home - LLM Inference using RTX 2080 Ti (Part 3)</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,27 +22,59 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/quarto-nav/headroom.min.js"></script>
-<script src="site_libs/clipboard/clipboard.min.js"></script>
-<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="site_libs/quarto-search/fuse.min.js"></script>
-<script src="site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="./">
-<script src="site_libs/quarto-listing/list.min.js"></script>
-<script src="site_libs/quarto-listing/quarto-listing.js"></script>
-<script src="site_libs/quarto-html/quarto.js"></script>
-<script src="site_libs/quarto-html/popper.min.js"></script>
-<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="site_libs/quarto-html/anchor.min.js"></script>
-<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -68,67 +102,9 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
-<script>
 
-  window.document.addEventListener("DOMContentLoaded", function (_event) {
-    const listingTargetEl = window.document.querySelector('#listing-listing .list');
-    if (!listingTargetEl) {
-      // No listing discovered, do not attach.
-      return; 
-    }
 
-    const options = {
-      valueNames: ['listing-date','listing-title','listing-author','listing-image','listing-description','listing-categories',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
-      
-      searchColumns: ["listing-date","listing-title","listing-author","listing-image","listing-description","listing-categories"],
-    };
-
-    window['quarto-listings'] = window['quarto-listings'] || {};
-    window['quarto-listings']['listing-listing'] = new List('listing-listing', options);
-
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  });
-
-  window.addEventListener('hashchange',() => {
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  })
-  </script>
-
-  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
-
-<script type="text/javascript">
-const typesetMath = (el) => {
-  if (window.MathJax) {
-    // MathJax Typeset
-    window.MathJax.typeset([el]);
-  } else if (window.katex) {
-    // KaTeX Render
-    var mathElements = el.getElementsByClassName("math");
-    var macros = [];
-    for (var i = 0; i < mathElements.length; i++) {
-      var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN") {
-        window.katex.render(texText.data, mathElements[i], {
-          displayMode: mathElements[i].classList.contains('display'),
-          throwOnError: false,
-          macros: macros,
-          fleqn: false
-        });
-      }
-    }
-  }
-}
-window.Quarto = {
-  typesetMath
-};
-</script>
-
-<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="../../styles.css">
 </head>
 
 <body class="nav-fixed">
@@ -138,7 +114,7 @@ window.Quarto = {
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a class="navbar-brand" href="./index.html">
+    <a class="navbar-brand" href="../../index.html">
     <span class="navbar-title">Farng Hwai’s Home</span>
     </a>
   </div>
@@ -149,7 +125,7 @@ window.Quarto = {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item">
-    <a class="nav-link" href="./about.html"> 
+    <a class="nav-link" href="../../about.html"> 
 <span class="menu-text">About</span></a>
   </li>  
   <li class="nav-item compact">
@@ -167,191 +143,161 @@ window.Quarto = {
 <!-- content -->
 <header id="title-block-header" class="quarto-title-block default page-columns page-full">
   <div class="quarto-title-banner page-columns page-full">
-    <div class="quarto-title column-page-left">
-      <h1 class="title">FarngHwai.github.io</h1>
-                      </div>
+    <div class="quarto-title column-body">
+      <h1 class="title">LLM Inference using RTX 2080 Ti (Part 3)</h1>
+                                <div class="quarto-categories">
+                <div class="quarto-category">llm</div>
+                <div class="quarto-category">hf</div>
+                <div class="quarto-category">langchain</div>
+              </div>
+                  </div>
   </div>
     
   
-  <div class="quarto-title-meta column-page-left">
+  <div class="quarto-title-meta">
 
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>Farng Hwai Yew </p>
+            </div>
+    </div>
       
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">February 13, 2024</p>
+      </div>
+    </div>
     
       
     </div>
     
   
-  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        
-    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(4)</span></div><div class="category" data-category="hf">hf <span class="quarto-category-count">(3)</span></div><div class="category" data-category="langchain">langchain <span class="quarto-category-count">(2)</span></div><div class="category" data-category="llm">llm <span class="quarto-category-count">(3)</span></div><div class="category" data-category="news">news <span class="quarto-category-count">(1)</span></div></div></div>
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#llm-inference-using-rtx-2080-ti-part-3" id="toc-llm-inference-using-rtx-2080-ti-part-3" class="nav-link active" data-scroll-target="#llm-inference-using-rtx-2080-ti-part-3">LLM Inference using RTX 2080 Ti (Part 3)</a>
+  <ul class="collapse">
+  <li><a href="#overview" id="toc-overview" class="nav-link" data-scroll-target="#overview">Overview</a></li>
+  <li><a href="#environment" id="toc-environment" class="nav-link" data-scroll-target="#environment">Environment</a></li>
+  <li><a href="#steps" id="toc-steps" class="nav-link" data-scroll-target="#steps">Steps</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
 <!-- main -->
-<main class="content quarto-banner-title-block column-page-left" id="quarto-document-content">
+<main class="content quarto-banner-title-block" id="quarto-document-content">
 
 
 
 
 
+<section id="llm-inference-using-rtx-2080-ti-part-3" class="level1">
+<h1>LLM Inference using RTX 2080 Ti (Part 3)</h1>
+<section id="overview" class="level2">
+<h2 class="anchored" data-anchor-id="overview">Overview</h2>
+<p>Build a simple question-answering application using LangChain. This time, a vector-store component is needed for computation and FAISS developed by Meta is picked to try out. As FAISS only support up to python version 3.10 and official package only available from conda, hence switching development environment is performed. Intel python bundle is selected since the current device is intel based and it have accelerated python packages dedicated for Intel cpu and have conda package management needed to install FAISS.</p>
+</section>
+<section id="environment" class="level2">
+<h2 class="anchored" data-anchor-id="environment">Environment</h2>
+<table class="table">
+<thead>
+<tr class="header">
+<th>Category</th>
+<th>Model</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Language</td>
+<td>Python 3.10.13</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="steps" class="level2">
+<h2 class="anchored" data-anchor-id="steps">Steps</h2>
+<ol type="1">
+<li><p>Setup Intel Python environment. Download from <a href="https://www.intel.com/content/www/us/en/developer/articles/tool/oneapi-standalone-components.html#python">Intel website</a> and install it from bash. Follow the interactive question to setup the initial environment. The package management will be “conda” instead “pip”.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># https://www.intel.com/content/www/us/en/developer/articles/technical/get-started-with-intel-distribution-for-python.html</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">bash</span> ./intelpython3-2024.0.0_251-Linux-x86_64.sh</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+<li><p>Additional Conda Setup</p>
+<ol type="1">
+<li><p>Deactivate auto activate as “base” when open <em>terminal</em></p></li>
+<li><p>Use mamba library as resolver to speed-up dependency resolver.</p></li>
+</ol>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># no auto activate "base" conda</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> config <span class="at">--set</span> auto_activate_base false</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Use new solver</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> update <span class="at">-n</span> base conda</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> install <span class="at">-n</span> base conda-libmamba-solver</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> config <span class="at">--set</span> solver libmamba    </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+<li><p>Setup new environment with python <strong>3.10</strong> as default python version come with is 3.9, activate the environment and re-install python packages used in previous lessons.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># create new environment named "hf"</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> create <span class="at">-n</span> hf python=3.10</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> activate hf</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> install pytorch torchvision torchaudio pytorch-cuda=11.8 <span class="at">-c</span> pytorch <span class="at">-c</span> nvidia</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> install bitsandbytes transformers accelerate optimum</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> install langchain</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+<li><p>Install new python packages need for data loading and processing:</p>
+<ol type="1">
+<li><p><em>FAISS</em> vector stores for vector processing,</p></li>
+<li><p><em>sentence-transformers used in</em> HuggingFace embedding for computing, and</p></li>
+<li><p><em>beautifulsoup4</em> for webpage processing python packages.</p></li>
+</ol>
+<div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>conda install faiss<span class="op">-</span>gpu</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>conda install sentence<span class="op">-</span>transformers beautifulsoup4</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+<li><p>Based on sample code from <a href="https://python.langchain.com/docs/use_cases/question_answering/quickstart">Langchain - Use Cases - Q&amp;A with RAG - Quickstart</a>:</p>
+<ol type="1">
+<li><p>Use <em>HuggingFace</em> model instead of <em>OpenAI</em></p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># llm = ChatOpenAI(model_name="gpt-3.5-turbo", temperature=0)</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>llm <span class="op">=</span> HuggingFacePipeline(pipeline<span class="op">=</span>pipe)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+<li><p>Change usage of <em>Chroma</em> to <em>FAISS</em>, and <em>OpenAiEmbeddings</em> to <em>HuggingFaceEmbeddings</em></p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># vectorstore = Chroma.from_documents(documents=all_splits, embedding=OpenAIEmbeddings())</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>vectorstore <span class="op">=</span> FAISS.from_documents(documents<span class="op">=</span>splits, embedding<span class="op">=</span>HuggingFaceEmbeddings())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+<li><p>Convert template in <em>Hub</em> to “<em>ChatPromptTemplate</em>” and “<em>HumanMessagePromptTemplate</em>” equivalent.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># prompt = hub.pull("rlm/rag-prompt")</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>prompt <span class="op">=</span> ChatPromptTemplate.from_messages(</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    [</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>        HumanMessagePromptTemplate.from_template(</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="st">"""You are an assistant for question-answering tasks. Use the following pieces of retrieved context to answer the question. If you don't know the answer, just say that you don't know. Use three sentences maximum and keep the answer concise.</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="st">Question: </span><span class="sc">{question}</span><span class="st"> </span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="st">Context: </span><span class="sc">{context}</span><span class="st"> </span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="st">Answer:"""</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>        ),</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>    ]</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+<li><p>Comment out vectorstore.delete_collection() as FAISS package do not have delete collection function.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># vectorstore.delete_collection()</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+</ol></li>
+<li><p>Output</p>
+<p><img src="images/output-1.png" class="img-fluid"></p></li>
+</ol>
+</section>
+<section id="references" class="level2">
+<h2 class="anchored" data-anchor-id="references">References</h2>
+<ol type="1">
+<li><a href="https://www.intel.com/content/www/us/en/developer/articles/tool/oneapi-standalone-components.html#python" class="uri">https://www.intel.com/content/www/us/en/developer/articles/tool/oneapi-standalone-components.html#python</a></li>
+<li><a href="https://github.com/facebookresearch/faiss" class="uri">https://github.com/facebookresearch/faiss</a></li>
+<li><a href="https://python.langchain.com/docs/use_cases/question_answering/quickstart" class="uri">https://python.langchain.com/docs/use_cases/question_answering/quickstart</a></li>
+</ol>
 
 
+</section>
+</section>
 
-
-<div class="quarto-listing quarto-listing-container-default" id="listing-listing">
-<div class="list quarto-listing-default">
-<div class="quarto-post image-right" data-index="0" data-categories="llm,hf,langchain" data-listing-date-sort="1707753600000" data-listing-file-modified-sort="1707813444802" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="4" data-listing-word-count-sort="763">
-<div class="thumbnail">
-<p><a href="./posts/llm_inference_using_rtx_2080_ti-part_3/index.html" class="no-external"></a></p><a href="./posts/llm_inference_using_rtx_2080_ti-part_3/index.html" class="no-external">
-<p class="card-img-top"><img src="posts/llm_inference_using_rtx_2080_ti-part_3/images/output-1.png"  class="thumbnail-image card-img"/></p>
-</a><p><a href="./posts/llm_inference_using_rtx_2080_ti-part_3/index.html" class="no-external"></a></p>
-</div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/llm_inference_using_rtx_2080_ti-part_3/index.html" class="no-external">LLM Inference using RTX 2080 Ti (Part 3)</a>
-</h3>
-<div class="listing-subtitle">
-<a href="./posts/llm_inference_using_rtx_2080_ti-part_3/index.html" class="no-external"></a>
-</div>
-<div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('llm'); return false;">
-llm
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('hf'); return false;">
-hf
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('langchain'); return false;">
-langchain
-</div>
-</div>
-<div class="listing-description">
-<a href="./posts/llm_inference_using_rtx_2080_ti-part_3/index.html" class="no-external">Build a simple question-answering application using LangChain. This time, a vector-store component is needed for computation and FAISS developed by Meta is picked to try…</a>
-</div>
-</div>
-<div class="metadata">
-<a href="./posts/llm_inference_using_rtx_2080_ti-part_3/index.html" class="no-external">
-<div class="listing-date">
-Feb 13, 2024
-</div>
-<div class="listing-author">
-Farng Hwai Yew
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="1" data-categories="llm,hf,langchain" data-listing-date-sort="1707408000000" data-listing-file-modified-sort="1707812930212" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="323">
-<div class="thumbnail">
-<p><a href="./posts/llm_inference_using_rtx_2080_ti-part_2/index.html" class="no-external"></a></p><a href="./posts/llm_inference_using_rtx_2080_ti-part_2/index.html" class="no-external">
-<p class="card-img-top"><img src="posts/llm_inference_using_rtx_2080_ti-part_2/images/output-1.png"  class="thumbnail-image card-img"/></p>
-</a><p><a href="./posts/llm_inference_using_rtx_2080_ti-part_2/index.html" class="no-external"></a></p>
-</div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/llm_inference_using_rtx_2080_ti-part_2/index.html" class="no-external">LLM Inference using RTX 2080 Ti (Part 2)</a>
-</h3>
-<div class="listing-subtitle">
-<a href="./posts/llm_inference_using_rtx_2080_ti-part_2/index.html" class="no-external"></a>
-</div>
-<div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('llm'); return false;">
-llm
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('hf'); return false;">
-hf
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('langchain'); return false;">
-langchain
-</div>
-</div>
-<div class="listing-description">
-<a href="./posts/llm_inference_using_rtx_2080_ti-part_2/index.html" class="no-external">Include LangChain framework so that the LLM application is context aware and perform reasoning based on language model selected.</a>
-</div>
-</div>
-<div class="metadata">
-<a href="./posts/llm_inference_using_rtx_2080_ti-part_2/index.html" class="no-external">
-<div class="listing-date">
-Feb 9, 2024
-</div>
-<div class="listing-author">
-Farng Hwai Yew
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="2" data-categories="llm,hf" data-listing-date-sort="1707148800000" data-listing-file-modified-sort="1707210587012" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="4" data-listing-word-count-sort="644">
-<div class="thumbnail">
-<p><a href="./posts/llm_inference_using_rtx_2080_ti-part_1/index.html" class="no-external"></a></p><a href="./posts/llm_inference_using_rtx_2080_ti-part_1/index.html" class="no-external">
-<p class="card-img-top"><img src="posts/llm_inference_using_rtx_2080_ti-part_1/images/output.png"  class="thumbnail-image card-img"/></p>
-</a><p><a href="./posts/llm_inference_using_rtx_2080_ti-part_1/index.html" class="no-external"></a></p>
-</div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/llm_inference_using_rtx_2080_ti-part_1/index.html" class="no-external">LLM Inference using RTX 2080 Ti (Part 1)</a>
-</h3>
-<div class="listing-subtitle">
-<a href="./posts/llm_inference_using_rtx_2080_ti-part_1/index.html" class="no-external"></a>
-</div>
-<div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('llm'); return false;">
-llm
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('hf'); return false;">
-hf
-</div>
-</div>
-<div class="listing-description">
-<a href="./posts/llm_inference_using_rtx_2080_ti-part_1/index.html" class="no-external">First try on Large Language Model (LLM) inference coding. Pick <strong>Llama2 7b Chat HF</strong> model which can downloaded from HuggingFace after request from <strong>Meta</strong>. Inference hardware is…</a>
-</div>
-</div>
-<div class="metadata">
-<a href="./posts/llm_inference_using_rtx_2080_ti-part_1/index.html" class="no-external">
-<div class="listing-date">
-Feb 6, 2024
-</div>
-<div class="listing-author">
-Farng Hwai Yew
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="3" data-categories="news" data-listing-date-sort="1706544000000" data-listing-file-modified-sort="1706598488713" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="9">
-<div class="thumbnail">
-<p><a href="./posts/welcome/index.html" class="no-external"></a></p><a href="./posts/welcome/index.html" class="no-external">
-<div class="listing-item-img-placeholder card-img-top" >&nbsp;</div>
-</a><p><a href="./posts/welcome/index.html" class="no-external"></a></p>
-</div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/welcome/index.html" class="no-external">Welcome To My Blog</a>
-</h3>
-<div class="listing-subtitle">
-<a href="./posts/welcome/index.html" class="no-external"></a>
-</div>
-<div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('news'); return false;">
-news
-</div>
-</div>
-<div class="listing-description">
-<a href="./posts/welcome/index.html" class="no-external">This is the first post in a blog. Welcome!</a>
-</div>
-</div>
-<div class="metadata">
-<a href="./posts/welcome/index.html" class="no-external">
-<div class="listing-date">
-Jan 30, 2024
-</div>
-<div class="listing-author">
-Farng Hwai Yew
-</div>
-</a>
-</div>
-</div>
-</div>
-<div class="listing-no-matching d-none">
-No matching items
-</div>
-</div></main> <!-- /main -->
+</main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {

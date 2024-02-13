@@ -1,0 +1,119 @@
+---
+title: "LLM Inference using RTX 2080 Ti (Part 3)"
+author: "Farng Hwai Yew"
+date: "2024-02-13"
+toc: true
+categories: [llm, hf, langchain]
+---
+
+# LLM Inference using RTX 2080 Ti (Part 3)
+
+## Overview
+
+Build a simple question-answering application using LangChain. This time, a vector-store component is needed for computation and FAISS developed by Meta is picked to try out. As FAISS only support up to python version 3.10 and official package only available from conda, hence switching development environment is performed. Intel python bundle is selected since the current device is intel based and it have accelerated python packages dedicated for Intel cpu and have conda package management needed to install FAISS.
+
+## Environment
+
+| Category | Model          |
+|----------|----------------|
+| Language | Python 3.10.13 |
+
+## Steps
+
+1.  Setup Intel Python environment. Download from [Intel website](https://www.intel.com/content/www/us/en/developer/articles/tool/oneapi-standalone-components.html#python) and install it from bash. Follow the interactive question to setup the initial environment. The package management will be "conda" instead "pip".
+
+    ``` bash
+    # https://www.intel.com/content/www/us/en/developer/articles/technical/get-started-with-intel-distribution-for-python.html
+    bash ./intelpython3-2024.0.0_251-Linux-x86_64.sh
+    ```
+
+2.  Additional Conda Setup
+
+    1.  Deactivate auto activate as "base" when open *terminal*
+
+    2.  Use mamba library as resolver to speed-up dependency resolver.
+
+    ``` bash
+    # no auto activate "base" conda
+    conda config --set auto_activate_base false
+
+    # Use new solver
+    conda update -n base conda
+    conda install -n base conda-libmamba-solver
+    conda config --set solver libmamba    
+    ```
+
+3.  Setup new environment with python **3.10** as default python version come with is 3.9, activate the environment and re-install python packages used in previous lessons.
+
+    ``` bash
+    # create new environment named "hf"
+    conda create -n hf python=3.10
+
+    conda activate hf
+
+    conda install pytorch torchvision torchaudio pytorch-cuda=11.8 -c pytorch -c nvidia
+
+    conda install bitsandbytes transformers accelerate optimum
+    conda install langchain
+    ```
+
+4.  Install new python packages need for data loading and processing:
+
+    1.  *FAISS* vector stores for vector processing,
+
+    2.  *sentence-transformers used in* HuggingFace embedding for computing, and
+
+    3.  *beautifulsoup4* for webpage processing python packages.
+
+    ``` python
+    conda install faiss-gpu
+    conda install sentence-transformers beautifulsoup4
+    ```
+
+5.  Based on sample code from [Langchain - Use Cases - Q&A with RAG - Quickstart](https://python.langchain.com/docs/use_cases/question_answering/quickstart):
+
+    1.  Use *HuggingFace* model instead of *OpenAI*
+
+        ``` python
+        # llm = ChatOpenAI(model_name="gpt-3.5-turbo", temperature=0)
+        llm = HuggingFacePipeline(pipeline=pipe)
+        ```
+
+    2.  Change usage of *Chroma* to *FAISS*, and *OpenAiEmbeddings* to *HuggingFaceEmbeddings*
+
+        ``` python
+        # vectorstore = Chroma.from_documents(documents=all_splits, embedding=OpenAIEmbeddings())
+        vectorstore = FAISS.from_documents(documents=splits, embedding=HuggingFaceEmbeddings())
+        ```
+
+    3.  Convert template in *Hub* to "*ChatPromptTemplate*" and "*HumanMessagePromptTemplate*" equivalent.
+
+        ``` python
+        # prompt = hub.pull("rlm/rag-prompt")
+        prompt = ChatPromptTemplate.from_messages(
+            [
+                HumanMessagePromptTemplate.from_template(
+        """You are an assistant for question-answering tasks. Use the following pieces of retrieved context to answer the question. If you don't know the answer, just say that you don't know. Use three sentences maximum and keep the answer concise.
+        Question: {question} 
+        Context: {context} 
+        Answer:"""
+                ),
+            ]
+        )
+        ```
+
+    4.  Comment out vectorstore.delete_collection() as FAISS package do not have delete collection function.
+
+        ``` python
+        # vectorstore.delete_collection()
+        ```
+
+6.  Output
+
+    ![](images/output-1.png)
+
+## References
+
+1.  <https://www.intel.com/content/www/us/en/developer/articles/tool/oneapi-standalone-components.html#python>
+2.  <https://github.com/facebookresearch/faiss>
+3.  <https://python.langchain.com/docs/use_cases/question_answering/quickstart>
